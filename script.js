@@ -59,10 +59,9 @@ console.log(divMovies)
     movieImage.classList.add("card-img-top");
     movieTitle.classList.add("card-title");
     CardDiv.innerHTML = `
-        <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
-      movie.title
-    } poster">
-        <h3>${movie.title}</h3>`;
+        <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${movie.title
+} poster">
+        <h4>${movie.title}</h4>`;
     CardDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
@@ -76,6 +75,7 @@ console.log(divMovies)
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovie = (movie) => {
   CONTAINER.innerHTML = `
+  <div class="movDetail">
     <div class="row">
         <div class="col-md-4">
              <img id="movie-backdrop" src=${
@@ -94,7 +94,8 @@ const renderMovie = (movie) => {
         </div>
             <h3>Actors:</h3>
             <ul id="actors" class="list-unstyled"></ul>
-    </div>`;
+    </div>
+  </div>`;
 };
 
 document.addEventListener("DOMContentLoaded", autorun);
