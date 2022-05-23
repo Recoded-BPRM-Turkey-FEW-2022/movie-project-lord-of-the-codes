@@ -3,7 +3,7 @@
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const PROFILE_BASE_URL = "http://image.tmdb.org/t/p/w185";
 const BACKDROP_BASE_URL = "http://image.tmdb.org/t/p/w780";
-const CONTAINER = document.querySelector(".container");
+const CONTAINER = document.querySelector(".container-fluid");
 
 // Don't touch this function please
 const autorun = async () => {
@@ -40,17 +40,36 @@ const fetchMovie = async (movieId) => {
 
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
+  const CONTAINER = document.querySelector(".container-fluid");
+  const divMovies=document.createElement("div");
+  const MoviesHeader=document.createElement("h1");
+  MoviesHeader.innerHTML="Movies"
+  CONTAINER.appendChild(MoviesHeader)
+  divMovies.classList.add("d-flex",
+  "flex-row",
+  "flex-wrap","justify-content-around"
+  );
+console.log(divMovies)
+/////////////
   movies.map((movie) => {
-    const movieDiv = document.createElement("div");
-    movieDiv.innerHTML = `
+    const CardDiv = document.createElement("div");
+    const movieImage = document.createElement("img");
+    const movieTitle = document.createElement("h3");
+    CardDiv.classList.add("card");
+    movieImage.classList.add("card-img-top");
+    movieTitle.classList.add("card-title");
+    CardDiv.innerHTML = `
         <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
       movie.title
     } poster">
         <h3>${movie.title}</h3>`;
-    movieDiv.addEventListener("click", () => {
+    CardDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
-    CONTAINER.appendChild(movieDiv);
+    CardDiv.appendChild(movieImage);
+    CardDiv.appendChild(movieTitle);
+    divMovies.appendChild(CardDiv)
+    CONTAINER.appendChild(divMovies);
   });
 };
 
