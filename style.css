@@ -1,11 +1,48 @@
+html {
+    display: block;
+}
+
+body { 
+    background-color: black;
+}
+.FirstSection{
+    color: white;
+    height: 700px;
+    background-image: url(./12.webp);
+    background-position: right;
+    background-repeat: no-repeat;
+}
 #movie-backdrop {
     width: 100%;
 }
-
-.container {
+.container-fluid
+{
     padding-top: 32px;
-}
+    justify-content: space-around!important;
 
+}
 #actors {
     margin: 24px 16px 0 0;
+}
+.third-part{
+    background: gray;   
+}
+.flex-container{
+    margin-top: 150px;
+    padding-left: 50px;
+}
+#movie-backdrop{
+size: 10px;
+}
+.card{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.25rem;
+    width: 20%;
+    padding: 10px;
+    margin: 1rem 0.5rem;
 }
