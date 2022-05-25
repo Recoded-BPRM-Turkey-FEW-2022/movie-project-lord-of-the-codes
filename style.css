@@ -33,9 +33,12 @@ h1{
     padding-top: 32px;
     justify-content: space-around!important;
     background-image: linear-gradient(black, rgb(153, 1, 1));
+
 }
 .card{
     cursor: pointer;
+    display:flex;
+    flex-direction: column;
 }
 .card:hover{
     box-shadow: 0 8px 16px 3px rgba(0, 0, 0, 0.6);
@@ -80,9 +83,10 @@ size: 10px;
 .movDetail{
     color: white;
 }
+
 /*responsiveness
 -also it can give us an idea about what to add, i didn't fix it*/
-/*@media only screen and (min-width: 375px) and (max-width: 667px) {
+@media only screen and (min-width: 375px) and (max-width: 667px) {
     #container {
       margin: 0;
       padding: 0;
@@ -164,9 +168,6 @@ size: 10px;
       width: 45%;
     }
 
-    .shadow_effect {
-      width: 80%;
-    }
 
     .single_movie_img {
       position: relative;
@@ -189,7 +190,7 @@ size: 10px;
       width:6rem;
     }
 
-    #first-part p {
+    .movDetail p {
       font-size: 1rem;
     }
 
@@ -230,4 +231,6 @@ size: 10px;
     }
 
   }
+
 */
+
