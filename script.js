@@ -71,10 +71,9 @@ const renderMovies = (movies) => {
     movieImage.classList.add("card-img-top");
     movieTitle.classList.add("card-title");
     CardDiv.innerHTML = `
-        <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
-      movie.title
-    } poster">
-        <h3>${movie.title}</h3>`;
+        <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${movie.title
+} poster">
+        <h4>${movie.title}</h4>`;
     CardDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
@@ -90,6 +89,7 @@ const renderMovie = (movie) => {
   firstsection.setAttribute("style", "background-image: url(" +BACKDROP_BASE_URL + movie.backdrop_path+ ");background-size: cover;");
   CONTAINER.setAttribute("style", "background-color: white;");  
   CONTAINER.innerHTML = `
+  <div class="movDetail">
     <div class="row">
         <div class="col-md-8">
             <h2 id="movie-title">${movie.title}</h2>
