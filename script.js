@@ -332,6 +332,10 @@ const renderActor = (movies) => {
   });
   
 };
+<<<<<<< HEAD
+=======
+
+>>>>>>> d17e5f219d641d9f7924dbe6a1806ab9daae1394
 //////////////////////
 const fetchUpcomingMovies = async () => {
   const url = `https://api.themoviedb.org/3/movie/upcoming?api_key=542003918769df50083a13c415bbc602&language=en-US&page=1`;
@@ -579,6 +583,66 @@ GenresBtn.addEventListener("click", async function () {
       </div>`;
   };
 
+const API_URL = 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=23381f9d606c6cff00c6543b3446c4ad&page=1'
+const IMG_PATH = 'https://image.tmdb.org/t/p/w1280'
+const SEARCH_API = 'https://api.themoviedb.org/3/search/movie?api_key=23381f9d606c6cff00c6543b3446c4ad&query=" '
+const main = document.getElementById("content");
+const search = document.getElementById("search");
+
+
+const searchconstructUrl = (searchValue) => {
+  return `${TMDB_BASE_URL}/search/multi?api_key=${atob('NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI=')}&query=${searchValue}`;
+};
+
+const searchRes = async (searchValue) => {
+  const url = searchconstructUrl(searchValue);
+  const res = await fetch(url);
+  const json = await res.json();
+  return json;
+}
+
+
+const renderSearch = async (data) => {
+  const resDat = await searchRes(data)
+  const searchContent = document.getElementById("content");
+
+    if (resDat === undefined) {
+    alert("undefined")
+  } else if (resDat === movie){
+    searchContent.innerHTML = "";
+    resDat.results.forEach(element => {
+      const elementContainer = document.createElement("div")
+      elementContainer.innerHTML=`
+      <h3 class="red-text">${element.title}</h3>
+<img width="300" src="${IMG_PATH + element.backdrop_path}">
+`
+elementContainer.classList.add('className')
+  searchContent.appendChild(elementContainer)
+})
+  }else if(resDat === person){
+    searchContent.innerHTML="";
+    resDat.results.forEach(popi => {
+      const elementContainer = document.createElement("div")
+      elementContainer.innerHTML= `
+      <h3 class="red-text">${popi.name}</h3>
+      <img width ="300" src="${PROFILE_BASE_URL + popi.profile_path}">
+      `
+      searchContent.appendChild(elementContainer)
+    })
+  }
+}
+
+
+const form = document.getElementById("searchBtn");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const results = await searchRes();
+  const searchIn = document.querySelector("#search");
+  searchIn.innerHTML = "";
+  renderSearch(results);
+});
+
+
 
 const API_URL = 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=23381f9d606c6cff00c6543b3446c4ad&page=1'
 const IMG_PATH = 'https://image.tmdb.org/t/p/w1280'
@@ -665,3 +729,7 @@ form.addEventListener("click", async (e) => {
 });
 document.addEventListener("DOMContentLoaded", autorun);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> d17e5f219d641d9f7924dbe6a1806ab9daae1394
