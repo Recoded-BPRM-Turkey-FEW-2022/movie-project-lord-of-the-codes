@@ -394,11 +394,11 @@ const fetchGenre= async ()=>{
   const res = await fetch(url)
   return res.json();
 };
-////////////////////////////////////////
+//getting the Genres name on the Nav Bar
 let GenresBtn = document.querySelector('.GenresBtn');
 GenresBtn.addEventListener("click", async function () {
   const GenresDownTab = await fetchGenre();
-  const CONTAINER = document.querySelector(".container-fluid");
+  console.log("GenresDownTab",GenresDownTab)
   renderNavGenres(GenresDownTab);  
 });
   const moviesNav = document.getElementById('moviesNav');
@@ -414,7 +414,7 @@ GenresBtn.addEventListener("click", async function () {
       moviesNav.appendChild(genreName)
     });
   };
-
+  // this is for the Genres Page
   const GenreArray = [
     {
       "id": 28,
@@ -493,41 +493,36 @@ GenresBtn.addEventListener("click", async function () {
       "name": "Western"
     }
   ]
-
   const grenerDiscover= async(genre)=>{
     const movies = await fetchDiscover(genre);
     let CONTAINER = document.querySelector(".container-fluid");
     CONTAINER.innerHTML = ""
-    renderGenres(movies);
+    renderGenres(movies,genre);
   }
   const  fetchDiscover= async(genresID)=>{
     const url = constructUrl(`discover/movie`) + `&with_genres=${genresID}`;
     const response = await fetch(url)
     const data = await response.json()
-    console.log(data);
+    console.log("the genres url",url);
     return data.results;
   }
-
-  const renderGenres = (movies) => {
+  const renderGenres = (movies,genre) => {
     const CONTAINER = document.querySelector(".container-fluid");
     const divMovies=document.createElement("div");
     const MoviesHeader=document.createElement("h1");
     CONTAINER.setAttribute("style", "background-color: white;");
-    for(let i=0;i<GenreArray.length;i++)
-    {
-      console.log(GenreArray[i].id)
-      if(movies.id===GenreArray[i].id)
+      for(let i=1;i<GenreArray.length;i++)
       {
-        console.log("helo",GenreArray[i].name)
-        MoviesHeader.innerHTML="ss",GenreArray[i].name
+        if(genre === GenreArray[i].id)
+      {
+        MoviesHeader.innerHTML=GenreArray[i].name
+      } 
       }
-    }
     CONTAINER.appendChild(MoviesHeader)
     divMovies.classList.add("d-flex",
     "flex-row",
     "flex-wrap","justify-content-around"
     );
-    console.log(movies)
     movies.map((movie) => {
       const CardDiv = document.createElement("div");
       const movieImage = document.createElement("img");
@@ -549,7 +544,7 @@ GenresBtn.addEventListener("click", async function () {
     });
   };
 
-////////////////////////////////////
+// this is for fetching the Actor
   const fetchActorDetails = async (ActorId) => {
     const url = constructUrl(`person/popular/${ActorId}`);
     const res = await fetch(url);
@@ -585,71 +580,88 @@ GenresBtn.addEventListener("click", async function () {
   };
 
 
-document.addEventListener("DOMContentLoaded", autorun);
-/*static _ReleaseDataConstructUrl() {
-  return `${this.TMDB_BASE_URL}/discover/movie?api_key=${atob('NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI=')}&sort_by=release_date.desc`;
-}*/
-
 const API_URL = 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=23381f9d606c6cff00c6543b3446c4ad&page=1'
 const IMG_PATH = 'https://image.tmdb.org/t/p/w1280'
 const SEARCH_API = 'https://api.themoviedb.org/3/search/movie?api_key=23381f9d606c6cff00c6543b3446c4ad&query=" '
 const main = document.getElementById("content");
-const search = document.getElementById("search");
+const searchValue = document.getElementById("search");
 
-
-const searchconstructUrl = (searchValue) => {
-  return `${TMDB_BASE_URL}/search/multi?api_key=${atob('NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI=')}&query=${searchValue}`;
+//Search Bar
+const searchconstructUrl = (search) => {
+  return `${TMDB_BASE_URL}/search/multi?api_key=${atob('NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI=')}&query=${search}`;
 };
 
-const searchRes = async (searchValue) => {
-  const url = searchconstructUrl(searchValue);
+const searchRes = async (search) => {
+  const url = searchconstructUrl(search);
   const res = await fetch(url);
-  const json = await res.json();
-  return json;
+  console.log("res",res);
+  return res.json();
 }
-
 
 const renderSearch = async (data) => {
-  const resDat = await searchRes(data)
+  const CONTAINER = document.querySelector(".container-fluid");
+  CONTAINER.innerHTML = "";
+  //const resDat = await searchRes(data)
   const searchContent = document.getElementById("content");
-
-    if (resDat === undefined) {
-    alert("undefined")
-  } else if (resDat === movie){
-    searchContent.innerHTML = "";
-    resDat.results.forEach(element => {
-      const elementContainer = document.createElement("div")
-      elementContainer.innerHTML=`
-      <h3 class="red-text">${element.title}</h3>
-<img width="300" src="${IMG_PATH + element.backdrop_path}">
-`
-elementContainer.classList.add('className')
-  searchContent.appendChild(elementContainer)
-})
-  }else if(resDat === person){
-    searchContent.innerHTML="";
-    resDat.results.forEach(popi => {
-      const elementContainer = document.createElement("div")
-      elementContainer.innerHTML= `
-      <h3 class="red-text">${popi.name}</h3>
-      <img width ="300" src="${PROFILE_BASE_URL + popi.profile_path}">
-      `
-      searchContent.appendChild(elementContainer)
-    })
-  }
+  const divMovies=document.createElement("div");
+  divMovies.classList.add("d-flex",
+  "flex-row",
+  "flex-wrap","justify-content-around"
+  );
+  data.results.forEach(element => {
+    if (element.media_type == undefined) {
+      alert("undefined")
+    } 
+    else if (element.media_type === "movie"){
+        const CardDiv = document.createElement("div");
+        const movieImage = document.createElement("img");
+        const movieTitle = document.createElement("h3");
+        CardDiv.classList.add("card");
+        movieImage.classList.add("card-img-top");
+        movieTitle.classList.add("card-title");
+        CardDiv.innerHTML = `
+            <img src="${PROFILE_BASE_URL + element.backdrop_path}" alt="${
+              element.title
+        } poster">
+            <h3>${element.title}</h3>`;
+        CardDiv.addEventListener("click", () => {
+          movieDetails(element);
+        });
+        CardDiv.appendChild(movieImage);
+        CardDiv.appendChild(movieTitle);
+        divMovies.appendChild(CardDiv)
+        CONTAINER.appendChild(divMovies);
+      }
+      //////////////////
+    else if(element.media_type === "person"){
+      console.log("sssssss",element)
+      const CardDiv = document.createElement("div");
+        const movieImage = document.createElement("img");
+        const movieTitle = document.createElement("h3");
+        CardDiv.classList.add("card");
+        movieImage.classList.add("card-img-top");
+        movieTitle.classList.add("card-title");
+        CardDiv.innerHTML = `
+            <img src="${PROFILE_BASE_URL + element.backdrop_path}" alt="${
+              element.name
+        } poster">
+            <h3>${element.name}</h3>`;
+        CardDiv.addEventListener("click", () => {
+          movieDetails(element);
+        });
+        CardDiv.appendChild(movieImage);
+        CardDiv.appendChild(movieTitle);
+        divMovies.appendChild(CardDiv)
+        CONTAINER.appendChild(divMovies);
+      }
+});
 }
-
-
-const form = document.getElementById("searchBtn");
-form.addEventListener("submit", async (e) => {
+let form = document.getElementById("searchBtn");
+form.addEventListener("click", async (e) => {
   e.preventDefault();
-  const results = await searchRes();
-  const searchIn = document.querySelector("#search");
-  searchIn.innerHTML = "";
+  const results = await searchRes(searchValue.value);
+  console.log("ssss",results)
   renderSearch(results);
 });
-
-
-
 document.addEventListener("DOMContentLoaded", autorun);
 
