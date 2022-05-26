@@ -44,11 +44,7 @@ const fetchPeople= async()=> {
   return data.results;
 }
 
-const fetchGenre= async (genreId)=>{
-  const url = constructUrl(`genre/movie/list`)
-  const res = await fetch(url)
-  return res.json();
-}
+
 
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
@@ -285,7 +281,6 @@ const renderTopRated = (movies) => {
   });
   
 };
-////////////////////////////////
 
 const fetchActor = async () => {
   const url = constructUrl(`person/popular`);
@@ -293,8 +288,6 @@ const fetchActor = async () => {
   const data = await res.json()
   return data.results;
 };
-console.log(fetchActor())
-
 
 
 let Actors = document.getElementById('Actor');
@@ -307,7 +300,6 @@ Actors.addEventListener("click", async function () {
 
 const renderActor = (movies) => {
   const CONTAINER = document.querySelector(".container-fluid");
-  console.log("jkqdw",movies)
   const divMovies=document.createElement("div");
   const MoviesHeader=document.createElement("h1");
   MoviesHeader.innerHTML="Actors"
@@ -329,7 +321,7 @@ const renderActor = (movies) => {
     } poster">
         <h3>${movie.name}</h3>`;
     CardDiv.addEventListener("click", () => {
-      movieDetails(movie);
+      RenderActorDetails(movie);
     });
     CardDiv.appendChild(movieImage);
     CardDiv.appendChild(movieTitle);
@@ -338,7 +330,257 @@ const renderActor = (movies) => {
   });
   
 };
-/*static _ReleaseDataConstructUrl() {
-  return `${this.TMDB_BASE_URL}/discover/movie?api_key=${atob('NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI=')}&sort_by=release_date.desc`;
-}*/
+//////////////////////
+const fetchUpcomingMovies = async () => {
+  const url = `https://api.themoviedb.org/3/movie/upcoming?api_key=542003918769df50083a13c415bbc602&language=en-US&page=1`;
+  const res = await fetch(url);
+  const data = await res.json()
+  return data.results;
+};
+let UpcomingMovies = document.getElementById('up-coming');
+UpcomingMovies.addEventListener("click", async function () {
+  const UpcomingRender = await fetchUpcomingMovies();
+  const CONTAINER = document.querySelector(".container-fluid");
+  CONTAINER.innerHTML = "";
+  renderfetchUpcomingMovies(UpcomingRender);  
+});
+console.log(fetchUpcomingMovies())
+const renderfetchUpcomingMovies = (movies) => {
+  const CONTAINER = document.querySelector(".container-fluid");
+  const divMovies=document.createElement("div");
+  const MoviesHeader=document.createElement("h1");
+  MoviesHeader.innerHTML="Up Coming"
+  CONTAINER.appendChild(MoviesHeader)
+  divMovies.classList.add("d-flex",
+  "flex-row",
+  "flex-wrap","justify-content-around"
+  );
+  movies.map((movie) => {
+    const CardDiv = document.createElement("div");
+    const movieImage = document.createElement("img");
+    const movieTitle = document.createElement("h3");
+    CardDiv.classList.add("card");
+    movieImage.classList.add("card-img-top");
+    movieTitle.classList.add("card-title");
+    CardDiv.innerHTML = `
+    <img src="${PROFILE_BASE_URL+movie.backdrop_path}" alt="${
+      movie.title
+    } poster">
+        <h3>${movie.name}</h3>`;
+    CardDiv.addEventListener("click", () => {
+      movieDetails(movie);
+    });
+    CardDiv.appendChild(movieImage);
+    CardDiv.appendChild(movieTitle);
+    divMovies.appendChild(CardDiv)
+    CONTAINER.appendChild(divMovies);
+  });
+};
+
+let now_playing = document.getElementById('now-playing');
+UpcomingMovies.addEventListener("click", async function () {
+  const NowPlaying = await fetchUpcomingMovies();
+  const CONTAINER = document.querySelector(".container-fluid");
+  CONTAINER.innerHTML = "";
+  renderMovies(NowPlaying);  
+});
+
+
+// Genres
+const fetchGenre= async ()=>{
+  const url = constructUrl(`genre/movie/list`)
+  const res = await fetch(url)
+  return res.json();
+};
+////////////////////////////////////////
+let GenresBtn = document.querySelector('.GenresBtn');
+GenresBtn.addEventListener("click", async function () {
+  const GenresDownTab = await fetchGenre();
+  const CONTAINER = document.querySelector(".container-fluid");
+  renderNavGenres(GenresDownTab);  
+});
+  const moviesNav = document.getElementById('moviesNav');
+  const renderNavGenres=(genres)=>{
+    const GenresArray=genres.genres
+    GenresArray.map((genre) => {
+      const genreName = document.createElement("a")
+      genreName.classList.add ("dropdown-item");
+      genreName.textContent = `${genre.name}`
+      genreName.addEventListener("click", function() {
+        grenerDiscover(genre.id);
+      });
+      moviesNav.appendChild(genreName)
+    });
+  };
+
+  const GenreArray = [
+    {
+      "id": 28,
+      "name": "Action"
+    },
+    {
+      "id": 12,
+      "name": "Adventure"
+    },
+    {
+      "id": 16,
+      "name": "Animation"
+    },
+    {
+      "id": 35,
+      "name": "Comedy"
+    },
+    {
+      "id": 80,
+      "name": "Crime"
+    },
+    {
+      "id": 99,
+      "name": "Documentary"
+    },
+    {
+      "id": 18,
+      "name": "Drama"
+    },
+    {
+      "id": 10751,
+      "name": "Family"
+    },
+    {
+      "id": 14,
+      "name": "Fantasy"
+    },
+    {
+      "id": 36,
+      "name": "History"
+    },
+    {
+      "id": 27,
+      "name": "Horror"
+    },
+    {
+      "id": 10402,
+      "name": "Music"
+    },
+    {
+      "id": 9648,
+      "name": "Mystery"
+    },
+    {
+      "id": 10749,
+      "name": "Romance"
+    },
+    {
+      "id": 878,
+      "name": "Science Fiction"
+    },
+    {
+      "id": 10770,
+      "name": "TV Movie"
+    },
+    {
+      "id": 53,
+      "name": "Thriller"
+    },
+    {
+      "id": 10752,
+      "name": "War"
+    },
+    {
+      "id": 37,
+      "name": "Western"
+    }
+  ]
+
+  const grenerDiscover= async(genre)=>{
+    const movies = await fetchDiscover(genre);
+    let CONTAINER = document.querySelector(".container-fluid");
+    CONTAINER.innerHTML = ""
+    renderGenres(movies);
+  }
+  const  fetchDiscover= async(genresID)=>{
+    const url = constructUrl(`discover/movie`) + `&with_genres=${genresID}`;
+    const response = await fetch(url)
+    const data = await response.json()
+    console.log(data);
+    return data.results;
+  }
+
+  const renderGenres = (movies) => {
+    const CONTAINER = document.querySelector(".container-fluid");
+    const divMovies=document.createElement("div");
+    const MoviesHeader=document.createElement("h1");
+    CONTAINER.setAttribute("style", "background-color: white;");
+    for(let i=0;i<GenreArray.length;i++)
+    {
+      console.log(GenreArray[i].id)
+      if(movies.id===GenreArray[i].id)
+      {
+        console.log("helo",GenreArray[i].name)
+        MoviesHeader.innerHTML="ss",GenreArray[i].name
+      }
+    }
+    CONTAINER.appendChild(MoviesHeader)
+    divMovies.classList.add("d-flex",
+    "flex-row",
+    "flex-wrap","justify-content-around"
+    );
+    console.log(movies)
+    movies.map((movie) => {
+      const CardDiv = document.createElement("div");
+      const movieImage = document.createElement("img");
+      const movieTitle = document.createElement("h3");
+      CardDiv.classList.add("card");
+      movieImage.classList.add("card-img-top");
+      movieTitle.classList.add("card-title");
+      CardDiv.innerHTML = `
+          <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${movie.title
+  } poster">
+          <h4>${movie.title}</h4>`;
+      CardDiv.addEventListener("click", () => {
+        movieDetails(movie);
+      });
+      CardDiv.appendChild(movieImage);
+      CardDiv.appendChild(movieTitle);
+      divMovies.appendChild(CardDiv)
+      CONTAINER.appendChild(divMovies);
+    });
+  };
+
+////////////////////////////////////
+  const fetchActorDetails = async (ActorId) => {
+    const url = constructUrl(`person/popular/${ActorId}`);
+    const res = await fetch(url);
+    return res.json();
+  };
+
+  const ActorDetails = async (Actor) => {
+    const movieRes = await fetchActorDetails(Actor.id);
+    renderActorDetails(movieRes);
+  };
+
+  const RenderActorDetails = (Actor) => {
+    const firstsection=document.querySelector(".FirstSection");
+    console.log("Actor Details",Actor)
+    firstsection.setAttribute("style", "background-image: url(" +BACKDROP_BASE_URL + Actor.profile_path+ ");background-size: cover;");
+    CONTAINER.setAttribute("style", "background-color: white;");  
+    CONTAINER.innerHTML = `
+    <div class="movDetail">
+      <div class="row">
+          <div class="col-md-8">
+              <h2 id="movie-title">${Actor.name}</h2>
+              <p id="movie-release-date"><b>Release Date:</b> ${
+                Actor.release_date
+              }</p>
+              <p id="movie-runtime"><b>Runtime:</b> ${Actor.runtime} Minutes</p>
+              <h3>Overview:</h3>
+              <p id="movie-overview">${Actor.overview}</p>
+          </div>
+          </div>
+              <h3>Actors:</h3>
+              <ul id="actors" class="list-unstyled">${Actor.actors}</ul>
+      </div>`;
+  };
+
+
 document.addEventListener("DOMContentLoaded", autorun);
