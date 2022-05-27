@@ -8,6 +8,7 @@ const CONTAINER = document.querySelector(".container-fluid");
 // Don't touch this function please
 const autorun = async () => {
   const movies = await fetchMovies();
+  CONTAINER.innerHTML = "";
   renderMovies(movies.results);
 };
 // Don't touch this function please
@@ -19,14 +20,18 @@ const constructUrl = (path) => {
 // You may need to add to this function, definitely don't delete it.
 const movieDetails = async (movie) => {
   const movieRes = await fetchMovie(movie.id);
-  console.log("moviesRes",movieRes)
-  renderMovie(movieRes);
+  const trailer=await fetchVideo(movie.id)
+  const MainActors=await fetchActors(movie.id);
+  const SimailarMovies=await fetchSimilarMovies(movie.id)
+  CONTAINER.innerHTML = "";
+  renderMovie(movieRes,trailer,MainActors,SimailarMovies);
 };
 
 // This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
 const fetchMovies = async () => {
   const url = constructUrl(`movie/now_playing`);
   const res = await fetch(url);
+  CONTAINER.innerHTML = "";
   return res.json();
 };
 
@@ -47,9 +52,120 @@ const fetchPeople= async()=> {
 
 
 
+const fetchVideo=async(movie_id)=>{
+  const url = `https://api.themoviedb.org/3/movie/${movie_id}/videos?api_key=542003918769df50083a13c415bbc602&language=en-US`
+  const response = await fetch(url)
+  const trailer = await response.json()
+  return trailer.results
+}
+
+const ActorsofMovies = async (movie) => {
+  const movieRes = await fetchActors(movie);
+  console.log(movieRes)
+  return movieRes
+};
+const fetchActors= async(movieId) =>{
+  const url = constructUrl(`movie/${movieId}/credits`);
+  const response = await fetch(url);
+  const data = await response.json();
+  console.log("credit",data)
+  return data;
+}
+
+const fetchSimilarMovies= async(movieId) =>{
+  const url = constructUrl(`movie/${movieId}/similar`);
+  const response = await fetch(url);
+  const data = await response.json();
+  console.log(data)
+  return data.results;
+}
+const fetchActorCredits = async (ActorId) => {
+  const url = constructUrl(`person/${ActorId}/movie_credits`);
+  const response = await fetch(url);
+  const data = await response.json();
+  return data
+};
+
+const ActorDetails = async (Actor) => {
+  const movieRes = await fetchActorDetails(Actor.id);
+  const ActorRes= await fetchActorCredits(Actor.id);
+  CONTAINER.innerHTML = "";
+  RenderActorDetails(movieRes,ActorRes);
+};
+
+const fetchActorDetails = async (ActorId) => {
+  const url = constructUrl(`person/${ActorId}`);
+  const res = await fetch(url);
+  return res.json();
+};
+
+const RenderActorDetails = (Actor,credits) => {
+  console.log(Actor)
+  console.log(credits)
+  let gender="female"
+  if(Actor.gender==1)
+  {
+    gender="female"
+  }
+  else{
+    gender="male"
+  }
+  const firstsection=document.querySelector(".FirstSection");
+  firstsection.setAttribute("style", "background-image: url(" +BACKDROP_BASE_URL + Actor.profile_path+ ");background-size: cover;");
+  CONTAINER.setAttribute("style", "background-color: white;");  
+  CONTAINER.innerHTML = `
+  <div class="movDetail">
+    <div class="row">
+    <div class="col-lg-8 col-md-12 col-sm-12">
+    <h2 id="actor-name"><span>${Actor.name}</span></h2>
+    <h4>Gender:</h4>
+    <p id="gender">${gender}</p>
+    <h4>Popularity:</h4>
+    <p id="popularity">${Actor.popularity}</p>
+    <h4>Birthday:</h4>
+    <p id="birthday">${Actor.birthday}</p>
+    <p id="death"></p>
+    <h4>Biography:</h4>
+     <p id="biography" style="color:#BDBDBD; font-size: .8rem;">${Actor.biography}</p>
+  </div>`;
+  if (Actor.deathDay) {
+    const birthday = document.querySelector(".death");
+    birthday.insertAdjacentHTML(
+      "afterend",
+      `<p><span style="color: gray">Died:</span> ${person.deathDay}</p>`
+    );
+  }
+  const ActorMovies=document.createElement("div");
+  const MoviesHeader=document.createElement("h1");
+  MoviesHeader.innerHTML="Paticipated Movies"
+  CONTAINER.appendChild(MoviesHeader)
+  ActorMovies.classList.add("d-flex",
+  "flex-row",
+  "flex-wrap","justify-content-around"
+  );
+      for (let i = 0; i < 5; i++) {
+        const CardDiv = document.createElement("div");
+        const movieImage = document.createElement("img");
+        const movieTitle = document.createElement("h3");
+        CardDiv.classList.add("card");
+        movieImage.classList.add("card-img-top");
+        movieTitle.classList.add("card-title");
+        CardDiv.innerHTML = `
+        <img src="${BACKDROP_BASE_URL +  credits.cast[i].backdrop_path}" alt="${
+          credits.cast[i].title
+        } poster">
+            <h3>${credits.cast[i].title}</h3>`;
+        CardDiv.addEventListener("click", () => {
+          movieDetails(Actor);
+        });
+        CardDiv.appendChild(movieImage);
+        CardDiv.appendChild(movieTitle);
+        ActorMovies.appendChild(CardDiv)
+        CONTAINER.appendChild(ActorMovies);
+    };
+};
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
-  console.log("movies",movies)
   const CONTAINER = document.querySelector(".container-fluid");
   const divMovies=document.createElement("div");
   const MoviesHeader=document.createElement("h1");
@@ -60,7 +176,6 @@ const renderMovies = (movies) => {
   "flex-row",
   "flex-wrap","justify-content-around"
   );
-
   movies.map((movie) => {
     const CardDiv = document.createElement("div");
     const movieImage = document.createElement("img");
@@ -82,26 +197,144 @@ const renderMovies = (movies) => {
   });
 };
 // You'll need to play with this function in order to add features and enhance the style.
-const renderMovie = (movie) => {
-  const firstsection=document.querySelector(".FirstSection");
-  firstsection.setAttribute("style", "background-image: url(" +BACKDROP_BASE_URL + movie.backdrop_path+ ");background-size: cover;");
-  CONTAINER.setAttribute("style", "background-color: white;");  
+const renderMovie = (movie,trailer,Actors,Similar) => {
+  CONTAINER.setAttribute("style", "background-color: white;");
   CONTAINER.innerHTML = `
   <div class="movDetail">
     <div class="row">
         <div class="col-md-8">
-            <h2 id="movie-title">${movie.title}</h2>
-            <p id="movie-release-date"><b>Release Date:</b> ${
-              movie.release_date
-            }</p>
-            <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
-            <h3>Overview:</h3>
-            <p id="movie-overview">${movie.overview}</p>
-        </div>
-        </div>
-            <h3>Actors:</h3>
-            <ul id="actors" class="list-unstyled">${movie.actors}</ul>
-    </div>`;
+        <div class="more_info">
+        <p id="movie-release-date">${movie.release_date}</p>
+        <p id="movie-runtime">${movie.runtime}</p>
+      </div>  
+      <h5>Overview:</h5>
+      <p id="movie-overview">${movie.overview}</p>
+      <div class="more_info">
+      <p>Rating: ${movie.vote_average}/10</p>
+      <p>Vote Count: ${movie.vote_count}</p>
+      </div>
+      <div class="more_info">
+              <p id="director"></p>
+              <p>Langauges:
+              <p class="language"></p></p>
+            </div>
+          <br>
+          <div id="Production-Companies">
+              
+            </div>
+    <iframe 
+    class="iframe"
+        height="300" 
+        width="560"
+        src="https://www.youtube.com/embed/${trailer[0].key}" 
+        title="${trailer[0].name}" 
+        frameborder="0"
+        allow="accelerometer; 
+        autoplay; 
+        clipboard-write; 
+        encrypted-media; 
+        gyroscope; picture-in-picture" 
+        allowfullscreen>
+    </iframe>
+     : ''
+    </div></div>`
+    const divMovies=document.createElement("div");
+    divMovies.classList.add("d-flex",
+    "flex-row",
+    "flex-wrap","justify-content-around"
+    );
+      for (let i = 0; i < 5; i++) {
+          const CardDiv = document.createElement("div");
+          const movieImage = document.createElement("img");
+          const movieTitle = document.createElement("h3");
+          CardDiv.classList.add("card");
+          movieImage.classList.add("card-img-top");
+          movieTitle.classList.add("card-title");
+          CardDiv.innerHTML = `
+          <img src="${BACKDROP_BASE_URL + Actors.cast[i].profile_path}" alt="${
+            Actors.cast[i].name
+          } poster">
+              <h3>${Actors.cast[i].name}</h3>`;
+          CardDiv.addEventListener("click", () => {
+            ActorDetails(movie);
+          });
+          CardDiv.appendChild(movieImage);
+          CardDiv.appendChild(movieTitle);
+          divMovies.appendChild(CardDiv)
+          CONTAINER.appendChild(divMovies);
+      };
+      const divsimilar=document.createElement("div");
+      divsimilar.classList.add("d-flex",
+    "flex-row",
+    "flex-wrap","justify-content-around"
+    );
+  const Divvv=document.createElement("div");
+  const MoviesHeader=document.createElement("h1");
+  MoviesHeader.innerHTML="Similar Movies"
+  CONTAINER.appendChild(MoviesHeader)
+  Divvv.classList.add("d-flex",
+  "flex-row",
+  "flex-wrap","justify-content-around"
+  );
+      for (let i = 0; i < 5; i++) {
+        const CardDiv = document.createElement("div");
+        const movieImage = document.createElement("img");
+        const movieTitle = document.createElement("h3");
+        CardDiv.classList.add("card");
+        movieImage.classList.add("card-img-top");
+        movieTitle.classList.add("card-title");
+        CardDiv.innerHTML = `
+        <img src="${BACKDROP_BASE_URL +  Similar[i].poster_path}" alt="${
+          Similar[i].title
+        } poster">
+            <h3>${Similar[i].title}</h3>`;
+        CardDiv.addEventListener("click", () => {
+          ActorDetails(movie);
+        });
+        CardDiv.appendChild(movieImage);
+        CardDiv.appendChild(movieTitle);
+        Divvv.appendChild(CardDiv)
+        CONTAINER.appendChild(Divvv);
+    };
+    console.log(movie.spoken_languages.length)
+    for (let i=0;i<movie.spoken_languages.length;i++) {
+      console.log(movie.spoken_languages[i])
+        const language = document.querySelector(".language");
+        language.innerText += " "+`${movie.spoken_languages[i].english_name}`;
+    }
+    for (let i=0;i<Actors.crew.length;i++) {
+      if (Actors.crew[i].known_for_department=="Directing") {
+        const director = document.getElementById("director");
+        console.log(Actors.crew[i].name)
+        director.innerHTML = `Director: ${Actors.crew[i].name}`;
+        break;
+      }
+    }
+  const mainDiv=document.createElement("div");
+  const CompaniesHeader=document.createElement("h1");
+  CompaniesHeader.innerHTML="Companies"
+  CONTAINER.appendChild(CompaniesHeader)
+  mainDiv.classList.add("d-flex",
+  "flex-row",
+  "flex-wrap","justify-content-around"
+  );
+    for (let i = 0; i < movie.production_companies.length; i++) {
+      const CardDiv = document.createElement("div");
+        const movieImage = document.createElement("img");
+        const movieTitle = document.createElement("h3");
+        CardDiv.classList.add("card");
+        movieImage.classList.add("card-img-top");
+        movieTitle.classList.add("card-title");
+        CardDiv.innerHTML = `
+        <img src="${BACKDROP_BASE_URL +  movie.production_companies[i].logo_path}" alt="${
+          movie.production_companies[i].name
+        } poster">
+            <h3>${movie.production_companies[i].name}</h3>`;
+        CardDiv.appendChild(movieImage);
+        CardDiv.appendChild(movieTitle);
+        mainDiv.appendChild(CardDiv)
+        CONTAINER.appendChild(mainDiv);
+      }
 };
 let aboutUsNav = document.getElementById('about-us');
 //adding  event listner to actors in navbar
@@ -323,7 +556,7 @@ const renderActor = (movies) => {
     } poster">
         <h3>${movie.name}</h3>`;
     CardDiv.addEventListener("click", () => {
-      RenderActorDetails(movie);
+      ActorDetails(movie);
     });
     CardDiv.appendChild(movieImage);
     CardDiv.appendChild(movieTitle);
@@ -398,6 +631,7 @@ const fetchGenre= async ()=>{
 let GenresBtn = document.querySelector('.GenresBtn');
 GenresBtn.addEventListener("click", async function () {
   const GenresDownTab = await fetchGenre();
+  CONTAINER.innerHTML = "";
   console.log("GenresDownTab",GenresDownTab)
   renderNavGenres(GenresDownTab);  
 });
@@ -503,7 +737,6 @@ GenresBtn.addEventListener("click", async function () {
     const url = constructUrl(`discover/movie`) + `&with_genres=${genresID}`;
     const response = await fetch(url)
     const data = await response.json()
-    console.log("the genres url",url);
     return data.results;
   }
   const renderGenres = (movies,genre) => {
@@ -543,44 +776,6 @@ GenresBtn.addEventListener("click", async function () {
       CONTAINER.appendChild(divMovies);
     });
   };
-
-// this is for fetching the Actor
-  const fetchActorDetails = async (ActorId) => {
-    const url = constructUrl(`person/popular/${ActorId}`);
-    const res = await fetch(url);
-    return res.json();
-  };
-
-  const ActorDetails = async (Actor) => {
-    const movieRes = await fetchActorDetails(Actor.id);
-    renderActorDetails(movieRes);
-  };
-
-  const RenderActorDetails = (Actor) => {
-    const firstsection=document.querySelector(".FirstSection");
-    console.log("Actor Details",Actor)
-    firstsection.setAttribute("style", "background-image: url(" +BACKDROP_BASE_URL + Actor.profile_path+ ");background-size: cover;");
-    CONTAINER.setAttribute("style", "background-color: white;");  
-    CONTAINER.innerHTML = `
-    <div class="movDetail">
-      <div class="row">
-          <div class="col-md-8">
-              <h2 id="movie-title">${Actor.name}</h2>
-              <p id="movie-release-date"><b>Release Date:</b> ${
-                Actor.release_date
-              }</p>
-              <p id="movie-runtime"><b>Runtime:</b> ${Actor.runtime} Minutes</p>
-              <h3>Overview:</h3>
-              <p id="movie-overview">${Actor.overview}</p>
-          </div>
-          </div>
-              <h3>Actors:</h3>
-              <ul id="actors" class="list-unstyled">${Actor.actors}</ul>
-      </div>`;
-  };
-
-
-
 const API_URL = 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=23381f9d606c6cff00c6543b3446c4ad&page=1'
 const IMG_PATH = 'https://image.tmdb.org/t/p/w1280'
 const SEARCH_API = 'https://api.themoviedb.org/3/search/movie?api_key=23381f9d606c6cff00c6543b3446c4ad&query=" '
@@ -602,8 +797,6 @@ const searchRes = async (search) => {
 const renderSearch = async (data) => {
   const CONTAINER = document.querySelector(".container-fluid");
   CONTAINER.innerHTML = "";
-  //const resDat = await searchRes(data)
-  const searchContent = document.getElementById("content");
   const divMovies=document.createElement("div");
   divMovies.classList.add("d-flex",
   "flex-row",
@@ -635,7 +828,6 @@ const renderSearch = async (data) => {
       }
       //////////////////
     else if(element.media_type === "person"){
-      console.log("sssssss",element)
       const CardDiv = document.createElement("div");
         const movieImage = document.createElement("img");
         const movieTitle = document.createElement("h3");
