@@ -23,6 +23,10 @@ h1{
     margin-bottom: 20px;
     width: auto;
     height: 600px;
+    background-image: url("./images/sdf.jpg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
 }
 /*.firstOther{
   width: auto;
@@ -136,7 +140,6 @@ size: 10px;
     justify-content: center;
     color: #fff;
     width: auto;
-    height: 10px;
     text-align: center;
     margin: auto;
 }
@@ -150,11 +153,13 @@ size: 10px;
   flex-direction: column;
   flex-wrap: wrap;
   position: relative;
-  margin: 50px;
-  margin-bottom: 10px;
+  margin:auto;
   display: flex;
   justify-content: space-around;
   color: #fff;
+  background-color: rgb(0, 0, 0);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /*.cardAct:hover{
@@ -185,7 +190,7 @@ size: 10px;
     flex-wrap: wrap;
     width: auto;
     margin: auto;
-margin-left: 25%;
+    margin-left: 25%;
 }
 
 /*responsiveness
