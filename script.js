@@ -145,7 +145,7 @@ const RenderActorDetails = (Actor,credits) => {
         const CardDiv = document.createElement("div");
         const movieImage = document.createElement("img");
         const movieTitle = document.createElement("h3");
-        CardDiv.classList.add("card");
+        CardDiv.classList.add("cardAct");
         movieImage.classList.add("card-img-top");
         movieTitle.classList.add("card-title");
         CardDiv.innerHTML = `
@@ -164,6 +164,7 @@ const RenderActorDetails = (Actor,credits) => {
 };
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
+  console.log(movies)
   const CONTAINER = document.querySelector(".container-fluid");
   const divMovies=document.createElement("div");
   const MoviesHeader=document.createElement("h1");
@@ -184,7 +185,9 @@ const renderMovies = (movies) => {
     CardDiv.innerHTML = `
         <img class="image" src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${movie.title
 } poster">
-        <h4 class="contentCard" >${movie.title}</h4>`;
+        <p class="contentCard" >${movie.title}</h4>
+        <p class="contentCard" >${movie.vote_average}</h4>
+        <p class="contentCard" >${movie.release_date}</h4>`;
     CardDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
@@ -239,13 +242,13 @@ const renderMovie = (movie,trailer,Actors,Similar) => {
     const divMovies=document.createElement("div");
     divMovies.classList.add("d-flex",
     "flex-row",
-    "flex-wrap","justify-content-around"
+    "flex-wrap",
     );
       for (let i = 0; i < 5; i++) {
           const CardDiv = document.createElement("div");
           const movieImage = document.createElement("img");
           const movieTitle = document.createElement("h3");
-          CardDiv.classList.add("card");
+          CardDiv.classList.add("cardAct");
           movieImage.classList.add("card-img-top");
           movieTitle.classList.add("card-title");
           CardDiv.innerHTML = `
@@ -272,13 +275,13 @@ const renderMovie = (movie,trailer,Actors,Similar) => {
   CONTAINER.appendChild(MoviesHeader)
   Divvv.classList.add("d-flex",
   "flex-row",
-  "flex-wrap","justify-content-around"
+  "flex-wrap",
   );
       for (let i = 0; i < 5; i++) {
         const CardDiv = document.createElement("div");
         const movieImage = document.createElement("img");
         const movieTitle = document.createElement("h3");
-        CardDiv.classList.add("card");
+        CardDiv.classList.add("cardAct");
         movieImage.classList.add("card-img-top");
         movieTitle.classList.add("card-title");
         CardDiv.innerHTML = `
@@ -314,13 +317,13 @@ const renderMovie = (movie,trailer,Actors,Similar) => {
   CONTAINER.appendChild(CompaniesHeader)
   mainDiv.classList.add("d-flex",
   "flex-row",
-  "flex-wrap","justify-content-around"
+  "flex-wrap",
   );
     for (let i = 0; i < movie.production_companies.length; i++) {
       const CardDiv = document.createElement("div");
         const movieImage = document.createElement("img");
         const movieTitle = document.createElement("h3");
-        CardDiv.classList.add("card");
+        CardDiv.classList.add("cardAct");
         movieImage.classList.add("card-img-top");
         movieTitle.classList.add("card-title");
         CardDiv.innerHTML = `
@@ -866,4 +869,3 @@ form.addEventListener("click", async (e) => {
   renderSearch(results);
 });
 document.addEventListener("DOMContentLoaded", autorun);
-
