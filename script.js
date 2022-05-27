@@ -161,8 +161,8 @@ const RenderActorDetails = (Actor,credits) => {
   else{
     gender="male"
   }
-  //firstsection.setAttribute("style", "background-image: url(" +BACKDROP_BASE_URL + Actor.profile_path+ ");background-size: cover;");
-  //CONTAINER.setAttribute("style", "background-color: white;");  
+  CONTAINER.setAttribute("style", "background-image: url(" +BACKDROP_BASE_URL + Actor.profile_path+ ");background-size: contain; background-position: left top; background-repeat: no-repeat; background-size: 500px 700px;");
+  //CONTAINER.setAttribute("style", "background-color: white;");
   CONTAINER.innerHTML = `
   <div class="movDetail">
     <div class="row">
@@ -176,7 +176,7 @@ const RenderActorDetails = (Actor,credits) => {
     <p id="birthday">${Actor.birthday}</p>
     <p id="death"></p>
     <h4>Biography:</h4>
-     <p id="biography" style="color:#BDBDBD; font-size: .8rem;">${Actor.biography}</p>
+     <p id="biography" style="color:#BDBDBD; font-size: .8rem;">${Actor.biography}</p><br><br><br><br><br><br><br><br>
   </div>`;
   if (Actor.deathDay) {
     const birthday = document.querySelector(".death");
@@ -191,7 +191,7 @@ const RenderActorDetails = (Actor,credits) => {
   CONTAINER.appendChild(MoviesHeader)
   ActorMovies.classList.add("d-flex",
   "flex-row",
-  "flex-wrap","justify-content-around"
+  "flex-wrap","justify-content-around",
   );
       for (let i = 0; i < 5; i++) {
         const CardDiv = document.createElement("div");
@@ -237,9 +237,9 @@ const renderMovies = (movies) => {
     CardDiv.innerHTML = `
         <img class="image" src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${movie.title
 } poster">
-        <p class="contentCard" >${movie.title}</p>
-        <p class="contentCard" >${movie.vote_average}</p>
-        <p class="contentCard" >${movie.release_date}</p>`;
+        <h4 class="contentCard" >${movie.title}</h4>
+        <h6 class="contentCard" >Rating: ${movie.vote_average}</h6>
+        <h6 class="contentCard" > Release Date :${movie.release_date}</h6>`;
     CardDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
@@ -251,20 +251,23 @@ const renderMovies = (movies) => {
 };
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovie = (movie,trailer,Actors,Similar) => {
-  CONTAINER.setAttribute("style", "background-color: white;");
+  CONTAINER.setAttribute("style", "background-color: white; color:white");
   CONTAINER.innerHTML = `
-  <div class="movDetail">
+  <div class="movDetail1">
     <div class="row">
         <div class="col-md-8">
+        <img  src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${movie.title
+        } poster">
         <div class="more_info">
+        <h4>${movie.title}</h4>
         <p id="movie-release-date">${movie.release_date}</p>
-        <p id="movie-runtime">${movie.runtime}</p>
-      </div>  
+        <p id="movie-runtime">Runtime: ${movie.runtime} mins</p>
+        </div>
       <h5>Overview:</h5>
       <p id="movie-overview">${movie.overview}</p>
       <div class="more_info">
-      <p>Rating: ${movie.vote_average}/10</p>
-      <p>Vote Count: ${movie.vote_count}</p>
+      <p> ${movie.vote_average}/10</p>
+      <p> ${movie.vote_count}</p>
       </div>
       <div class="more_info">
               <p id="director"></p>
@@ -273,23 +276,22 @@ const renderMovie = (movie,trailer,Actors,Similar) => {
             </div>
           <br>
           <div id="Production-Companies">
-              
+
             </div>
-    <iframe 
+    <iframe
     class="iframe"
-        height="300" 
-        width="560"
-        src="https://www.youtube.com/embed/${trailer[0].key}" 
-        title="${trailer[0].name}" 
+        height="300"
+        width="580"
+        src="https://www.youtube.com/embed/${trailer[0].key}"
+        title="${trailer[0].name}"
         frameborder="0"
-        allow="accelerometer; 
-        autoplay; 
-        clipboard-write; 
-        encrypted-media; 
-        gyroscope; picture-in-picture" 
+        allow="accelerometer;
+        autoplay;
+        clipboard-write;
+        encrypted-media;
+        gyroscope; picture-in-picture"
         allowfullscreen>
     </iframe>
-     : ''
     </div></div>`
     const divMovies=document.createElement("div");
     divMovies.classList.add("d-flex",
@@ -336,7 +338,7 @@ const renderMovie = (movie,trailer,Actors,Similar) => {
         CardDiv.classList.add("cardAct");
         movieImage.classList.add("card-img-top");
         movieTitle.classList.add("card-title");
-        CardDiv.innerHTML = `
+        CardDiv.innerHTML = `<br>
         <img src="${BACKDROP_BASE_URL +  Similar[i].poster_path}" alt="${
           Similar[i].title
         } poster">

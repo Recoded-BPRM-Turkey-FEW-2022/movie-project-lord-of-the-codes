@@ -1,195 +1,211 @@
 html {
-    display: block;
+  display: block;
 }
 
 body {
-    background-color: black;
-    font-family: 'Raleway', sans-serif;
+  background-color: black;
+  font-family: 'Raleway', sans-serif;
 }
 h1{
-    color: rgb(255, 255, 255);
-    margin-bottom: 40px;
+  color: rgb(255, 255, 255);
+  margin-bottom: 40px;
 }
 .navbar{
-   margin-top: 20px;
-   margin-left: 15px;
-   margin-right: 15px;
+ margin-top: 20px;
+ margin-left: 15px;
+ margin-right: 15px;
 }
 .nav-link:hover{
-    color:rgb(192, 0, 0)
+  color:rgb(192, 0, 0)
 }
 .FirstSection{
-    color: white;
-    margin-bottom: 20px;
-    width: auto;
-    height: 600px;
-    background-image: url("./images/sdf.jpg");
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  color: white;
+  margin-bottom: 20px;
+  width: auto;
+  height: 600px;
+  background-image: url("./images/sdf.jpg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
 /*.firstOther{
-  width: auto;
-  height: 700px;
+width: auto;
+height: 700px;
 }*/
 #movie-backdrop {
-    width: 100%;
+  width: 100%;
 }
 .mamamia{
-  margin-left: 220px;
-  margin-right: auto;
+margin-left: 220px;
+margin-right: auto;
 }
 
 /*all of the page design*/
 .container-fluid
 {   text-align: center;
-    padding-top: 32px;
-    justify-content: space-around!important;
-    background-image: linear-gradient(black, rgb(153, 1, 1));
-    display: flex;
-    flex-wrap: wrap;
-    position: relative;
+  padding-top: 32px;
+  justify-content: space-around!important;
+  background-image: linear-gradient(black, rgb(153, 1, 1));
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
 }
 /*hover effect start*/
 .container-fluid .card{
-    cursor: pointer;
-    flex-direction: column;
-    position: relative;
-    width: 380px;
-    height: 180px;
-    background-color: #fff;
-    margin: 30px 3px;
-    padding: 20px 15px;
-    display: flex;
-    box-shadow : 0 5px 20px rgba(0,0,0,0.5);
-    transition : 0.3s ease-in-out;
-    border-radius : 15px;
+  cursor: pointer;
+  flex-direction: column;
+  position: relative;
+  width: 380px;
+  height: 180px;
+  background-color: #fff;
+  margin: 30px 3px;
+  padding: 20px 15px;
+  display: flex;
+  box-shadow : 0 5px 20px rgba(0,0,0,0.5);
+  transition : 0.3s ease-in-out;
+  border-radius : 15px;
 }
 .container-fluid .card:hover{
-    height: 290px;
+  height: 290px;
 }
 .container-fluid .card .image{
   position : relative;
-  width : 300px;
-  height : 280px;
-  top : -40%;
-  left: 8px;
-  box-shadow : 0 5px 20px rgba(0,0,0,0.2);
-  z-index : 1;
+width : 300px;
+height : 280px;
+
+top : -40%;
+left: 8px;
+box-shadow : 0 5px 20px rgba(0,0,0,0.2);
+z-index : 1;
 }
 .container-fluid .card .image img {
-    max-width : 100%;
-    border-radius : 15px;
-  }
-  .container-fluid .card .contentCard {
-    position : relative;
-    top : -100px;
-    padding : 10px 15px;
-    color : #111;
-    text-align : center;
-    visibility : hidden;
-    opacity : 0;
-    transition : 0.3s ease-in-out;
+  max-width : 100%;
+  border-radius : 15px;
+}
+.container-fluid .card .contentCard {
+  position : relative;
+  top : -100px;
+  padding : 10px 15px;
+  color : #111;
+  text-align : center;
+font-weight: bolder;
+  visibility : hidden;
+  opacity : 0;
+  transition : 0.3s ease-in-out;
 
-  }
+}
 .container-fluid .card:hover .contentCard {
-    margin-top : 30px;
-    visibility : visible;
-    opacity : 1;
-    padding: 0%;
-    transition-delay: 0.2s;
+  margin-top : 23px;
+  visibility : visible;
+  opacity : 1;
+  padding: 0%;
+  transition-delay: 0.2s;
 }
 /*hover effect end*/
 
 #actors {
-    margin: 24px 16px 0 0;
+  margin: 24px 16px 0 0;
 }
 .third-part{
-    background: gray;
+  background: gray;
 }
 .flex-container{
-    margin-top: 150px;
-    padding-left: 50px;
+  margin-top: 150px;
+  padding-left: 50px;
 }
 #movie-backdrop{
 size: 10px;
 }
 /*actors cards*/
 .cardAct{
-    cursor: pointer;
-    flex-direction: column;
-    position: relative;
-    width: 270px;
-    height: 370px;
-    margin: 50px;
-    margin-right: 80px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-around;
-    box-shadow : 0 5px 20px rgba(0,0,0,0.5);
-    border-radius : 15px;
-    color: #fff;
+  cursor: pointer;
+  flex-direction: column;
+  position: relative;
+  width: 270px;
+  height: 370px;
+  margin: 50px;
+  margin-right: 80px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-around;
+  box-shadow : 0 5px 20px rgba(0,0,0,0.5);
+  border-radius : 15px;
+  color: #fff;
+  margin-top: 70px;
 }
 
 /*about us page*/
 .aboutUs{
-    cursor: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    color: #fff;
-    width: auto;
-    text-align: center;
-    margin: auto;
+  cursor: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  width: auto;
+  text-align: center;
+  margin: auto;
 }
 .aboutUsImage{
-    cursor: cell;
-    width: auto;
-    margin: auto;
+  cursor: cell;
+  width: auto;
+  margin: auto;
 }
 .aboutUsBody{
-  cursor: auto;
-  flex-direction: column;
-  flex-wrap: wrap;
-  position: relative;
-  margin:auto;
-  display: flex;
-  justify-content: space-around;
-  color: #fff;
-  background-color: rgb(0, 0, 0);
-  margin-left: auto;
-  margin-right: auto;
+cursor: auto;
+flex-direction: column;
+flex-wrap: wrap;
+position: relative;
+margin:auto;
+display: flex;
+justify-content: space-around;
+color: #fff;
+background-color: rgb(0, 0, 0);
+margin-left: auto;
+margin-right: auto;
 }
 
 /*.cardAct:hover{
-    height: 380px;
-    width: 280px;
+  height: 380px;
+  width: 280px;
 }*/
 
 /*search button design*/
 .btn-danger{
-    border: 2px solid rgba(212, 7, 0, 0.911);
-    border-radius: 40px;
-    background: transparent;
-    transition: all 0.3s ease 0s;
+  border: 2px solid rgba(212, 7, 0, 0.911);
+  border-radius: 40px;
+  background: transparent;
+  transition: all 0.3s ease 0s;
 }
 .btn-danger:hover{
-    color: #fff;
+  color: #fff;
   background: rgba(235, 8, 0, 0.932);
-  border: 2px solid rgba(199, 7, 0, 0.884);
+border: 2px solid rgba(199, 7, 0, 0.884);
 }
 
 /*movie details page*/
 .movDetail{
-    color: white;
-    display: flex;
-    text-align: center;
-    justify-content: center;
-    flex-direction: column;
-    flex-wrap: wrap;
-    width: auto;
-    margin: auto;
-    margin-left: 25%;
+  color: white;
+  display: flex;
+  text-align: start;
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: auto;
+  margin: auto;
+  margin-left: 40%;
+ margin-top: 5%;
+}
+.movDetail1{
+  color: white;
+  display: flex;
+  text-align: start;
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: auto;
+  margin: auto;
+  margin-left: 22%;
+ margin-top: 5%;
 }
 
 /*responsiveness
@@ -340,3 +356,4 @@ size: 10px;
 
   }
 */
+
