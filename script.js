@@ -16,6 +16,7 @@ const constructUrl = (path) => {
     "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="
   )}`;
 };
+
 // You may need to add to this function, definitely don't delete it.
 const movieDetails = async (movie) => {
   const movieRes = await fetchMovie(movie.id);
@@ -69,9 +70,9 @@ const renderMovies = (movies) => {
     movieImage.classList.add("card-img-top");
     movieTitle.classList.add("card-title");
     CardDiv.innerHTML = `
-        <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${movie.title
+        <img class="image" src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${movie.title
 } poster">
-        <h4>${movie.title}</h4>`;
+        <h4 class="contentCard" >${movie.title}</h4>`;
     CardDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
@@ -84,8 +85,8 @@ const renderMovies = (movies) => {
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovie = (movie) => {
   const firstsection=document.querySelector(".FirstSection");
-  firstsection.setAttribute("style", "background-image: url(" +BACKDROP_BASE_URL + movie.backdrop_path+ ");background-size: cover;");
-  CONTAINER.setAttribute("style", "background-color: white;");  
+  firstsection.setAttribute("style", "background-image: url(" +BACKDROP_BASE_URL + movie.backdrop_path+ ");background-size: contain; background-repeat: no-repeat;height: 500px;background-position: center;");
+  CONTAINER.setAttribute("style", "background-color: white;");
   CONTAINER.innerHTML = `
   <div class="movDetail">
     <div class="row">
@@ -97,10 +98,10 @@ const renderMovie = (movie) => {
             <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
             <h3>Overview:</h3>
             <p id="movie-overview">${movie.overview}</p>
-        </div>
-        </div>
             <h3>Actors:</h3>
-            <ul id="actors" class="list-unstyled">${movie.actors}</ul>
+            <ul id="actors" >${movie.actors}</ul>
+            </div>
+        </div>
     </div>`;
 };
 let aboutUsNav = document.getElementById('about-us');
@@ -108,19 +109,19 @@ let aboutUsNav = document.getElementById('about-us');
 aboutUsNav.addEventListener("click", async function () {
   AboutUsPage.renderAboutUs()
 });
-/////// About Us page rendering  
+/////// About Us page rendering
 class AboutUsPage {
   static container = document.querySelector(".FirstSection");
   static renderAboutUs() {
     AboutUsPage.container.innerHTML = "";
     const AboutUsDiv = document.createElement("div");
-    AboutUsDiv.classList.add("card");
-    AboutUsDiv.classList.add("mb-3");
+    AboutUsDiv.classList.add("aboutUsBody");
+    //AboutUsDiv.classList.add("mb-3");
     this.container.appendChild(AboutUsDiv)
 
     const abousUsImg = document.createElement("img");
-    abousUsImg.classList.add("card-img-top");
-    abousUsImg.src = "1.webp";
+    abousUsImg.classList.add("aboutUsImage");
+    abousUsImg.src = "./images/aboutus.png";
     AboutUsDiv.appendChild(abousUsImg)
 
     const AboutUsDivBody = document.createElement("div");
@@ -128,15 +129,20 @@ class AboutUsPage {
     AboutUsDiv.appendChild(AboutUsDivBody)
 
     const AboutUsDivTitle = document.createElement("h5");
-    AboutUsDivTitle.classList.add("card-title");
+    AboutUsDivTitle.classList.add("aboutUs");
     AboutUsDivTitle.textContent = "Let's talk about Movie Hub";
     AboutUsDivBody.appendChild(AboutUsDivTitle)
-    
 
-    const AboutUsDivTxt = document.createElement("P");
-    AboutUsDivTxt.classList.add("card-text");
-    AboutUsDivTxt.innerHTML = "The Movie Hub is a website built out of TMDb database. Our main goal is to bring you all the Movie information you need. New movies, Popular movies or Old movies; you'll find it all here. <br><br><strong> Enjoy browsing Movie Hub</strong>";
+
+    const AboutUsDivTxt = document.createElement("p");
+    AboutUsDivTxt.classList.add("aboutUs");
+    AboutUsDivTxt.innerHTML = "<br><br><br> <br>The Movie Hub is a website built out of TMDb database. Our main goal is to bring you all the Movie information you need. New movies, Popular movies or Old movies; you'll find it all here.";
     AboutUsDivBody.appendChild(AboutUsDivTxt)
+
+    const AboutUsDivNote = document.createElement("h4");
+    AboutUsDivNote.classList.add("aboutUs");
+    AboutUsDivNote.innerHTML = "<br><br><br><br> Enjoy browsing Movie Hub";
+    AboutUsDivTxt.appendChild(AboutUsDivNote)
   }
 }
 
@@ -165,27 +171,27 @@ const renderPopularMovies = (movies) => {
     movieImage.classList.add("card-img-top");
     movieTitle.classList.add("card-title");
     CardDiv.innerHTML = `
-        <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
+        <img class="image" src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
       movie.title
     } poster">
-        <h3>${movie.title}</h3>`;
+        <h3 class="contentCard">${movie.title}</h3>`;//classes can be changed
     CardDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
-  
+
     CardDiv.appendChild(movieImage);
     CardDiv.appendChild(movieTitle);
     divMovies.appendChild(CardDiv)
     CONTAINER.appendChild(divMovies);
   });
-  
+
 };
 let popularNav = document.getElementById('popular');
 popularNav.addEventListener("click", async function () {
   const popular = await fetchPopularMovies();
   const CONTAINER = document.querySelector(".container-fluid");
   CONTAINER.innerHTML = "";
-  renderPopularMovies(popular);  
+  renderPopularMovies(popular);
 });
 
 const fetchReleasedate= async()=> {
@@ -200,7 +206,7 @@ releasedate.addEventListener("click", async function () {
   const releaseDateRender = await fetchReleasedate();
   const CONTAINER = document.querySelector(".container-fluid");
   CONTAINER.innerHTML = "";
-  renderReleasedate(releaseDateRender);  
+  renderReleasedate(releaseDateRender);
 });
 
 const renderReleasedate = (movies) => {
@@ -225,13 +231,13 @@ const renderReleasedate = (movies) => {
     CardDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
-  
+
     CardDiv.appendChild(movieImage);
     CardDiv.appendChild(movieTitle);
     divMovies.appendChild(CardDiv)
     CONTAINER.appendChild(divMovies);
   });
-  
+
 };
 //////////////////////////////////////
 const fetchTopRated= async()=> {
@@ -247,7 +253,7 @@ TopRated.addEventListener("click", async function () {
   const releaseDateRender = await fetchTopRated();
   const CONTAINER = document.querySelector(".container-fluid");
   CONTAINER.innerHTML = "";
-  renderTopRated(releaseDateRender);  
+  renderTopRated(releaseDateRender);
 });
 
 const renderTopRated = (movies) => {
@@ -275,13 +281,13 @@ const renderTopRated = (movies) => {
     CardDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
-  
+
     CardDiv.appendChild(movieImage);
     CardDiv.appendChild(movieTitle);
     divMovies.appendChild(CardDiv)
     CONTAINER.appendChild(divMovies);
   });
- 
+
 };
 
 const fetchActor = async () => {
@@ -297,7 +303,7 @@ Actors.addEventListener("click", async function () {
   const ActorRender = await fetchActor();
   const CONTAINER = document.querySelector(".container-fluid");
   CONTAINER.innerHTML = "";
-  renderActor(ActorRender);  
+  renderActor(ActorRender);
 });
 
 const renderActor = (movies) => {
@@ -314,11 +320,11 @@ const renderActor = (movies) => {
     const CardDiv = document.createElement("div");
     const movieImage = document.createElement("img");
     const movieTitle = document.createElement("h3");
-    CardDiv.classList.add("card");
+    CardDiv.classList.add("cardAct");
     movieImage.classList.add("card-img-top");
     movieTitle.classList.add("card-title");
     CardDiv.innerHTML = `
-    <img src="${PROFILE_BASE_URL+movie.profile_path}" alt="${
+    <img class= "cardAct" src="${PROFILE_BASE_URL+movie.profile_path}" alt="${
       movie.name
     } poster">
         <h3>${movie.name}</h3>`;
@@ -330,7 +336,7 @@ const renderActor = (movies) => {
     divMovies.appendChild(CardDiv)
     CONTAINER.appendChild(divMovies);
   });
-  
+
 };
 //////////////////////
 const fetchUpcomingMovies = async () => {
@@ -344,7 +350,7 @@ UpcomingMovies.addEventListener("click", async function () {
   const UpcomingRender = await fetchUpcomingMovies();
   const CONTAINER = document.querySelector(".container-fluid");
   CONTAINER.innerHTML = "";
-  renderfetchUpcomingMovies(UpcomingRender);  
+  renderfetchUpcomingMovies(UpcomingRender);
 });
 console.log(fetchUpcomingMovies())
 const renderfetchUpcomingMovies = (movies) => {
@@ -384,7 +390,7 @@ UpcomingMovies.addEventListener("click", async function () {
   const NowPlaying = await fetchUpcomingMovies();
   const CONTAINER = document.querySelector(".container-fluid");
   CONTAINER.innerHTML = "";
-  renderMovies(NowPlaying);  
+  renderMovies(NowPlaying);
 });
 
 
@@ -399,7 +405,7 @@ let GenresBtn = document.querySelector('.GenresBtn');
 GenresBtn.addEventListener("click", async function () {
   const GenresDownTab = await fetchGenre();
   console.log("GenresDownTab",GenresDownTab)
-  renderNavGenres(GenresDownTab);  
+  renderNavGenres(GenresDownTab);
 });
   const moviesNav = document.getElementById('moviesNav');
   const renderNavGenres=(genres)=>{
@@ -516,7 +522,7 @@ GenresBtn.addEventListener("click", async function () {
         if(genre === GenreArray[i].id)
       {
         MoviesHeader.innerHTML=GenreArray[i].name
-      } 
+      }
       }
     CONTAINER.appendChild(MoviesHeader)
     divMovies.classList.add("d-flex",
@@ -559,8 +565,8 @@ GenresBtn.addEventListener("click", async function () {
   const RenderActorDetails = (Actor) => {
     const firstsection=document.querySelector(".FirstSection");
     console.log("Actor Details",Actor)
-    firstsection.setAttribute("style", "background-image: url(" +BACKDROP_BASE_URL + Actor.profile_path+ ");background-size: cover;");
-    CONTAINER.setAttribute("style", "background-color: white;");  
+    firstsection.setAttribute("style", "background-image: url(" +BACKDROP_BASE_URL + Actor.profile_path+ ");background-size: contain;background-repeat: no-repeat; background-position: center; height: 500px;width: 600px; margin:auto");
+    CONTAINER.setAttribute("style", "background-color: white;");
     CONTAINER.innerHTML = `
     <div class="movDetail">
       <div class="row">
@@ -612,7 +618,7 @@ const renderSearch = async (data) => {
   data.results.forEach(element => {
     if (element.media_type == undefined) {
       alert("undefined")
-    } 
+    }
     else if (element.media_type === "movie"){
         const CardDiv = document.createElement("div");
         const movieImage = document.createElement("img");
