@@ -20,14 +20,23 @@ h1{
 }
 .FirstSection{
     color: white;
-    height: 700px;
-    background-image: url(./12.webp);
-    background-position: right;
-    background-repeat: no-repeat;
+    margin-bottom: 20px;
+    width: auto;
+    height: 600px;
 }
+/*.firstOther{
+  width: auto;
+  height: 700px;
+}*/
 #movie-backdrop {
     width: 100%;
 }
+.mamamia{
+  margin-left: 220px;
+  margin-right: auto;
+}
+
+/*all of the page design*/
 .container-fluid
 {   text-align: center;
     padding-top: 32px;
@@ -37,6 +46,7 @@ h1{
     flex-wrap: wrap;
     position: relative;
 }
+/*hover effect start*/
 .container-fluid .card{
     cursor: pointer;
     flex-direction: column;
@@ -86,6 +96,7 @@ h1{
     opacity : 1;
     transition-delay: 0.2s;
 }
+/*hover effect end*/
 
 #actors {
     margin: 24px 16px 0 0;
@@ -100,6 +111,7 @@ h1{
 #movie-backdrop{
 size: 10px;
 }
+/*actors cards*/
 .cardAct{
     cursor: pointer;
     flex-direction: column;
@@ -107,31 +119,50 @@ size: 10px;
     width: 270px;
     height: 370px;
     margin: 50px;
+    margin-right: 80px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-around;
     box-shadow : 0 5px 20px rgba(0,0,0,0.5);
     border-radius : 15px;
-    color: rgb(0, 0, 0);
+    color: #fff;
 }
+
+/*about us page*/
 .aboutUs{
     cursor: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     color: #fff;
-    width: 900px;
+    width: auto;
     height: 10px;
     text-align: center;
     margin: auto;
 }
 .aboutUsImage{
     cursor: cell;
+    width: auto;
+    margin: auto;
+}
+.aboutUsBody{
+  cursor: auto;
+  flex-direction: column;
+  flex-wrap: wrap;
+  position: relative;
+  margin: 50px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-around;
+  color: #fff;
 }
 
 /*.cardAct:hover{
     height: 380px;
     width: 280px;
 }*/
+
+/*search button design*/
 .btn-danger{
     border: 2px solid rgba(212, 7, 0, 0.911);
     border-radius: 40px;
@@ -143,12 +174,18 @@ size: 10px;
     background: rgba(235, 8, 0, 0.932);
   border: 2px solid rgba(199, 7, 0, 0.884);
 }
+
+/*movie details page*/
 .movDetail{
     color: white;
- display: flex;
-text-align: center;
-justify-content: center;
-flex-direction: row;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: auto;
+    margin: auto;
+margin-left: 25%;
 }
 
 /*responsiveness
