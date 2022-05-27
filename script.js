@@ -36,7 +36,54 @@ const fetchMovies = async () => {
   return res.json();
 };
 
+const fetchActor = async () => {
+  const url = constructUrl(`person/popular`);
+  const res = await fetch(url);
+  const data = await res.json()
+  return data.results;
+};
 
+
+let Actors = document.getElementById('Actor');
+Actors.addEventListener("click", async function () {
+  const ActorRender = await fetchActor();
+  const CONTAINER = document.querySelector(".container-fluid");
+  CONTAINER.innerHTML = "";
+  renderActor(ActorRender);
+});
+
+const renderActor = (movies) => {
+  const CONTAINER = document.querySelector(".container-fluid");
+  const divMovies=document.createElement("div");
+  const MoviesHeader=document.createElement("h1");
+  MoviesHeader.innerHTML="Actors"
+  CONTAINER.appendChild(MoviesHeader)
+  divMovies.classList.add("d-flex",
+  "flex-row",
+  "flex-wrap","justify-content-around"
+  );
+  movies.map((movie) => {
+    const CardDiv = document.createElement("div");
+    const movieImage = document.createElement("img");
+    const movieTitle = document.createElement("h3");
+    CardDiv.classList.add("cardAct");
+    movieImage.classList.add("card-img-top");
+    movieTitle.classList.add("card-title");
+    CardDiv.innerHTML = `
+    <img class= "cardAct" src="${PROFILE_BASE_URL+movie.profile_path}" alt="${
+      movie.name
+    } poster">
+        <h3>${movie.name}</h3>`;
+    CardDiv.addEventListener("click", () => {
+      ActorDetails(movie);
+    });
+    CardDiv.appendChild(movieImage);
+    CardDiv.appendChild(movieTitle);
+    divMovies.appendChild(CardDiv)
+    CONTAINER.appendChild(divMovies);
+  });
+
+};
 // Don't touch this function please. This function is to fetch one movie.
 const fetchMovie = async (movieId) => {
   const url = constructUrl(`movie/${movieId}`);
@@ -83,24 +130,29 @@ const fetchSimilarMovies= async(movieId) =>{
 const fetchActorCredits = async (ActorId) => {
   const url = constructUrl(`person/${ActorId}/movie_credits`);
   const response = await fetch(url);
+  console.log(url)
   const data = await response.json();
   return data
+};
+const fetchActorDetails = async (ActorId) => {
+  const url = constructUrl(`person/${ActorId}`);
+  console.log(url)
+  const res = await fetch(url);
+  return res.json();
 };
 
 const ActorDetails = async (Actor) => {
   const movieRes = await fetchActorDetails(Actor.id);
   const ActorRes= await fetchActorCredits(Actor.id);
+  console.log(movieRes,ActorRes)
   CONTAINER.innerHTML = "";
   RenderActorDetails(movieRes,ActorRes);
 };
 
-const fetchActorDetails = async (ActorId) => {
-  const url = constructUrl(`person/${ActorId}`);
-  const res = await fetch(url);
-  return res.json();
-};
 
 const RenderActorDetails = (Actor,credits) => {
+  console.log(Actor);
+  console.log(credits);
   let gender="female"
   if(Actor.gender==1)
   {
@@ -130,7 +182,7 @@ const RenderActorDetails = (Actor,credits) => {
     const birthday = document.querySelector(".death");
     birthday.insertAdjacentHTML(
       "afterend",
-      `<p><span style="color: gray">Died:</span> ${person.deathDay}</p>`
+      `<p><span style="color: gray">Died:</span> ${Actor.deathDay}</p>`
     );
   }
   const ActorMovies=document.createElement("div");
@@ -258,9 +310,9 @@ const renderMovie = (movie,trailer,Actors,Similar) => {
             Actors.cast[i].name
           } poster">
               <h3>${Actors.cast[i].name}</h3>`;
-          CardDiv.addEventListener("click", () => {
-            ActorDetails(movie);
-          });
+              CardDiv.addEventListener("click", () => {
+                ActorDetails(Actors.cast[i]);
+              });
           CardDiv.appendChild(movieImage);
           CardDiv.appendChild(movieTitle);
           divMovies.appendChild(CardDiv)
@@ -342,44 +394,34 @@ const renderMovie = (movie,trailer,Actors,Similar) => {
 let aboutUsNav = document.getElementById('about-us');
 //adding  event listner to actors in navbar
 aboutUsNav.addEventListener("click", async function () {
-  AboutUsPage.renderAboutUs()
+  CONTAINER.innerHTML = "";
+  const AboutUsDiv = document.createElement("div");
+  AboutUsDiv.classList.add("aboutUsBody");
+  //AboutUsDiv.classList.add("mb-3");
+  CONTAINER.appendChild(AboutUsDiv)
+
+  const abousUsImg = document.createElement("img");
+  abousUsImg.classList.add("aboutUsImage");
+  abousUsImg.src = "./images/aboutus.png";
+  AboutUsDiv.appendChild(abousUsImg)
+
+  const AboutUsDivBody = document.createElement("div");
+  AboutUsDivBody.classList.add("card-body");
+  AboutUsDiv.appendChild(AboutUsDivBody)
+
+  const AboutUsDivTitle = document.createElement("h5");
+  AboutUsDivTitle.classList.add("aboutUs");
+  AboutUsDivTitle.textContent = "A better version of NETFLIX";
+  AboutUsDivBody.appendChild(AboutUsDivTitle)
+
+
+  const AboutUsDivTxt = document.createElement("p");
+  AboutUsDivTxt.classList.add("aboutUs");
+  AboutUsDivTxt.innerHTML = "<br>This is a movie database project, where it shows movies, their casts, ratings, trailers, related movies, genres, and so on.This project uses The Movie DB API: https://api.themoviedb.org/3. It is up to you to use your Google and Postman skills to explore the API and understand the data.";
+  AboutUsDivBody.appendChild(AboutUsDivTxt)
+
 });
-/////// About Us page rendering
-class AboutUsPage {
-  static container = document.querySelector(".FirstSection");
-  static renderAboutUs() {
-    AboutUsPage.container.innerHTML = "";
-    const AboutUsDiv = document.createElement("div");
-    AboutUsDiv.classList.add("aboutUsBody");
-    //AboutUsDiv.classList.add("mb-3");
-    this.container.appendChild(AboutUsDiv)
 
-    const abousUsImg = document.createElement("img");
-    abousUsImg.classList.add("aboutUsImage");
-    abousUsImg.src = "./images/aboutus.png";
-    AboutUsDiv.appendChild(abousUsImg)
-
-    const AboutUsDivBody = document.createElement("div");
-    AboutUsDivBody.classList.add("card-body");
-    AboutUsDiv.appendChild(AboutUsDivBody)
-
-    const AboutUsDivTitle = document.createElement("h5");
-    AboutUsDivTitle.classList.add("aboutUs");
-    AboutUsDivTitle.textContent = "Let's talk about Movie Hub";
-    AboutUsDivBody.appendChild(AboutUsDivTitle)
-
-
-    const AboutUsDivTxt = document.createElement("p");
-    AboutUsDivTxt.classList.add("aboutUs");
-    AboutUsDivTxt.innerHTML = "<br>The Movie Hub is a website built out of TMDb database. Our main goal is to bring you all the Movie information you need. New movies, Popular movies or Old movies; you'll find it all here.";
-    AboutUsDivBody.appendChild(AboutUsDivTxt)
-
-    const AboutUsDivNote = document.createElement("h4");
-    AboutUsDivNote.classList.add("aboutUs");
-    AboutUsDivNote.innerHTML = "<br> Enjoy browsing Movie Hub";
-    AboutUsDivTxt.appendChild(AboutUsDivNote)
-  }
-}
 
 const fetchPopularMovies= async()=> {
   const url = constructUrl(`movie/popular`)
@@ -517,62 +559,11 @@ const renderTopRated = (movies) => {
       movie.title
     } poster">
         <h3>${movie.title}</h3>
-        <h5> Genre: ${movie.genre.id}</h5>
-        <h5> Rate: ${movie.vote_average}</h5>
-        `;//need design here
+        `;//need to add these for card
     CardDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
 
-    CardDiv.appendChild(movieImage);
-    CardDiv.appendChild(movieTitle);
-    divMovies.appendChild(CardDiv)
-    CONTAINER.appendChild(divMovies);
-  });
-
-};
-
-const fetchActor = async () => {
-  const url = constructUrl(`person/popular`);
-  const res = await fetch(url);
-  const data = await res.json()
-  return data.results;
-};
-
-
-let Actors = document.getElementById('Actor');
-Actors.addEventListener("click", async function () {
-  const ActorRender = await fetchActor();
-  const CONTAINER = document.querySelector(".container-fluid");
-  CONTAINER.innerHTML = "";
-  renderActor(ActorRender);
-});
-
-const renderActor = (movies) => {
-  const CONTAINER = document.querySelector(".container-fluid");
-  const divMovies=document.createElement("div");
-  const MoviesHeader=document.createElement("h1");
-  MoviesHeader.innerHTML="Actors"
-  CONTAINER.appendChild(MoviesHeader)
-  divMovies.classList.add("d-flex",
-  "flex-row",
-  "flex-wrap","justify-content-around"
-  );
-  movies.map((movie) => {
-    const CardDiv = document.createElement("div");
-    const movieImage = document.createElement("img");
-    const movieTitle = document.createElement("h3");
-    CardDiv.classList.add("cardAct");
-    movieImage.classList.add("card-img-top");
-    movieTitle.classList.add("card-title");
-    CardDiv.innerHTML = `
-    <img class= "cardAct" src="${PROFILE_BASE_URL+movie.profile_path}" alt="${
-      movie.name
-    } poster">
-        <h3>${movie.name}</h3>`;
-    CardDiv.addEventListener("click", () => {
-      ActorDetails(movie);
-    });
     CardDiv.appendChild(movieImage);
     CardDiv.appendChild(movieTitle);
     divMovies.appendChild(CardDiv)
@@ -594,8 +585,8 @@ UpcomingMovies.addEventListener("click", async function () {
   CONTAINER.innerHTML = "";
   renderfetchUpcomingMovies(UpcomingRender);
 });
-console.log(fetchUpcomingMovies())
 const renderfetchUpcomingMovies = (movies) => {
+  console.log(movies)
   const CONTAINER = document.querySelector(".container-fluid");
   const divMovies=document.createElement("div");
   const MoviesHeader=document.createElement("h1");
@@ -616,7 +607,7 @@ const renderfetchUpcomingMovies = (movies) => {
     <img src="${PROFILE_BASE_URL+movie.backdrop_path}" alt="${
       movie.title
     } poster">
-        <h3>${movie.name}</h3>`;
+        <h3>${movie.title}</h3>`;
     CardDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
@@ -627,12 +618,46 @@ const renderfetchUpcomingMovies = (movies) => {
   });
 };
 
+const NowPlayingMovies = (movies) => {
+  console.log(movies)
+  const CONTAINER = document.querySelector(".container-fluid");
+  const divMovies=document.createElement("div");
+  const MoviesHeader=document.createElement("h1");
+  MoviesHeader.innerHTML="Now Playing"
+  CONTAINER.appendChild(MoviesHeader)
+  divMovies.classList.add("d-flex",
+  "flex-row",
+  "flex-wrap","justify-content-around"
+  );
+  movies.results.map((movie) => {
+    const CardDiv = document.createElement("div");
+    const movieImage = document.createElement("img");
+    const movieTitle = document.createElement("h3");
+    CardDiv.classList.add("card");
+    movieImage.classList.add("card-img-top");
+    movieTitle.classList.add("card-title");
+    CardDiv.innerHTML = `
+    <img src="${PROFILE_BASE_URL+movie.backdrop_path}" alt="${
+      movie.title
+    } poster">
+        <h3>${movie.title}</h3>`;
+    CardDiv.addEventListener("click", () => {
+      movieDetails(movie);
+    });
+    CardDiv.appendChild(movieImage);
+    CardDiv.appendChild(movieTitle);
+    divMovies.appendChild(CardDiv)
+    CONTAINER.appendChild(divMovies);
+  });
+};
+
+
 let now_playing = document.getElementById('now-playing');
-UpcomingMovies.addEventListener("click", async function () {
-  const NowPlaying = await fetchUpcomingMovies();
+now_playing.addEventListener("click", async function () {
+  const NowPlaying = await fetchMovies();
   const CONTAINER = document.querySelector(".container-fluid");
   CONTAINER.innerHTML = "";
-  renderMovies(NowPlaying);
+  NowPlayingMovies(NowPlaying);
 });
 
 
@@ -646,7 +671,6 @@ const fetchGenre= async ()=>{
 let GenresBtn = document.querySelector('.GenresBtn');
 GenresBtn.addEventListener("click", async function () {
   const GenresDownTab = await fetchGenre();
-  CONTAINER.innerHTML = "";
   console.log("GenresDownTab",GenresDownTab)
   renderNavGenres(GenresDownTab);
 });
