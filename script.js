@@ -136,12 +136,12 @@ class AboutUsPage {
 
     const AboutUsDivTxt = document.createElement("p");
     AboutUsDivTxt.classList.add("aboutUs");
-    AboutUsDivTxt.innerHTML = "<br><br><br> <br>The Movie Hub is a website built out of TMDb database. Our main goal is to bring you all the Movie information you need. New movies, Popular movies or Old movies; you'll find it all here.";
+    AboutUsDivTxt.innerHTML = "<br>The Movie Hub is a website built out of TMDb database. Our main goal is to bring you all the Movie information you need. New movies, Popular movies or Old movies; you'll find it all here.";
     AboutUsDivBody.appendChild(AboutUsDivTxt)
 
     const AboutUsDivNote = document.createElement("h4");
     AboutUsDivNote.classList.add("aboutUs");
-    AboutUsDivNote.innerHTML = "<br><br><br><br> Enjoy browsing Movie Hub";
+    AboutUsDivNote.innerHTML = "<br> Enjoy browsing Movie Hub";
     AboutUsDivTxt.appendChild(AboutUsDivNote)
   }
 }
@@ -171,10 +171,10 @@ const renderPopularMovies = (movies) => {
     movieImage.classList.add("card-img-top");
     movieTitle.classList.add("card-title");
     CardDiv.innerHTML = `
-        <img class="image" src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
+        <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
       movie.title
     } poster">
-        <h3 class="contentCard">${movie.title}</h3>`;//classes can be changed
+        <h3>${movie.title}</h3>`;//classes can be changed
     CardDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
@@ -270,14 +270,21 @@ const renderTopRated = (movies) => {
     const CardDiv = document.createElement("div");
     const movieImage = document.createElement("img");
     const movieTitle = document.createElement("h3");
+    const review = document.createElement("h5");
+    const cardGen = document.createElement("h5");
     CardDiv.classList.add("card");
     movieImage.classList.add("card-img-top");
     movieTitle.classList.add("card-title");
+    review.classList.add("card-text");
+    cardGen.classList.add("card-text");
     CardDiv.innerHTML = `
     <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
       movie.title
     } poster">
-        <h3>${movie.title}</h3>`;
+        <h3>${movie.title}</h3>
+        <h5>${movie.genre.id}</h5>
+        <h5>.${movie.vote_average}</h5>
+        `;//need to add these for card
     CardDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
@@ -565,23 +572,19 @@ GenresBtn.addEventListener("click", async function () {
   const RenderActorDetails = (Actor) => {
     const firstsection=document.querySelector(".FirstSection");
     console.log("Actor Details",Actor)
-    firstsection.setAttribute("style", "background-image: url(" +BACKDROP_BASE_URL + Actor.profile_path+ ");background-size: contain;background-repeat: no-repeat; background-position: center; height: 500px;width: 600px; margin:auto");
+    firstsection.setAttribute("style", "background-image: url(" +BACKDROP_BASE_URL + Actor.profile_path+ ");background-size: contain;background-repeat: no-repeat; background-position: center; margin:auto;");
     CONTAINER.setAttribute("style", "background-color: white;");
     CONTAINER.innerHTML = `
-    <div class="movDetail">
-      <div class="row">
-          <div class="col-md-8">
+    <div class="movDetail mx-auto">
               <h2 id="movie-title">${Actor.name}</h2>
-              <p id="movie-release-date"><b>Release Date:</b> ${
+              <h5 id="movie-release-date"><b>Biography:</h5> ${
                 Actor.release_date
               }</p>
-              <p id="movie-runtime"><b>Runtime:</b> ${Actor.runtime} Minutes</p>
-              <h3>Overview:</h3>
+              <h5 id="movie-runtime"><b>Birth/Death:</b> ${Actor.runtime}</h5>
+              <h5>Popularity:</h5>
               <p id="movie-overview">${Actor.overview}</p>
-          </div>
-          </div>
-              <h3>Actors:</h3>
-              <ul id="actors" class="list-unstyled">${Actor.actors}</ul>
+              <h5>Movies:</h5>
+              <ul id="actors">${Actor.actors}</ul>
       </div>`;
   };
 
@@ -590,7 +593,6 @@ GenresBtn.addEventListener("click", async function () {
 const API_URL = 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=23381f9d606c6cff00c6543b3446c4ad&page=1'
 const IMG_PATH = 'https://image.tmdb.org/t/p/w1280'
 const SEARCH_API = 'https://api.themoviedb.org/3/search/movie?api_key=23381f9d606c6cff00c6543b3446c4ad&query=" '
-const main = document.getElementById("content");
 const searchValue = document.getElementById("search");
 
 //Search Bar
