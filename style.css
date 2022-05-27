@@ -33,17 +33,60 @@ h1{
     padding-top: 32px;
     justify-content: space-around!important;
     background-image: linear-gradient(black, rgb(153, 1, 1));
-
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
 }
-.card{
+.container-fluid .card{
     cursor: pointer;
-    display:flex;
     flex-direction: column;
+    position: relative;
+    width: 380px;
+    height: 180px;
+    background-color: #fff;
+    margin: 30px 3px;
+    padding: 20px 15px;
+    display: flex;
+    box-shadow : 0 5px 20px rgba(0,0,0,0.5);
+    transition : 0.3s ease-in-out;
+    border-radius : 15px;
 }
-.card:hover{
-    box-shadow: 0 8px 16px 3px rgba(0, 0, 0, 0.6);
-  transform: translateX(-3px) scale(1.05) rotateX(15deg);
+.container-fluid .card:hover{
+    height: 290px;
 }
+.container-fluid .card .image{
+    position : relative;
+  width : 300px;
+  height : 280px;
+
+  top : -40%;
+  left: 8px;
+  box-shadow : 0 5px 20px rgba(0,0,0,0.2);
+  z-index : 1;
+}
+.container-fluid .card .image img {
+    max-width : 100%;
+    border-radius : 15px;
+  }
+  .container-fluid .card .contentCard {
+    position : relative;
+    top : -140px;
+    padding : 10px 15px;
+    color : #111;
+    text-align : center;
+
+    visibility : hidden;
+    opacity : 0;
+    transition : 0.3s ease-in-out;
+
+  }
+.container-fluid .card:hover .contentCard {
+    margin-top : 30px;
+    visibility : visible;
+    opacity : 1;
+    transition-delay: 0.2s;
+}
+
 #actors {
     margin: 24px 16px 0 0;
 }
@@ -57,18 +100,38 @@ h1{
 #movie-backdrop{
 size: 10px;
 }
-.card{
+.cardAct{
+    cursor: pointer;
+    flex-direction: column;
     position: relative;
+    width: 270px;
+    height: 370px;
+    margin: 50px;
+    display: flex;
+    justify-content: space-around;
+    box-shadow : 0 5px 20px rgba(0,0,0,0.5);
+    border-radius : 15px;
+    color: rgb(0, 0, 0);
+}
+.aboutUs{
+    cursor: auto;
     display: flex;
     flex-direction: column;
-    background-color: rgb(255, 255, 255);
-    background-clip: border-box;
-    border: 1px solid rgba(0, 0, 0, 0.137);
-    border-radius: 0.25rem;
-    width: 25%;
-    padding: 10px;
-    margin: 2rem 0.5rem;
+    justify-content: center;
+    color: #fff;
+    width: 900px;
+    height: 10px;
+    text-align: center;
+    margin: auto;
 }
+.aboutUsImage{
+    cursor: cell;
+}
+
+/*.cardAct:hover{
+    height: 380px;
+    width: 280px;
+}*/
 .btn-danger{
     border: 2px solid rgba(212, 7, 0, 0.911);
     border-radius: 40px;
@@ -82,10 +145,14 @@ size: 10px;
 }
 .movDetail{
     color: white;
+ display: flex;
+text-align: center;
+justify-content: center;
+flex-direction: row;
 }
 
 /*responsiveness
--also it can give us an idea about what to add, i didn't fix it*/
+-also it can give us an idea about what to add, i didn't fix it
 @media only screen and (min-width: 375px) and (max-width: 667px) {
     #container {
       margin: 0;
@@ -231,6 +298,4 @@ size: 10px;
     }
 
   }
-
 */
-
