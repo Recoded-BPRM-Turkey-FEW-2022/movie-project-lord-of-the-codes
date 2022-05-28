@@ -40,6 +40,7 @@ const fetchActor = async () => {
   const url = constructUrl(`person/popular`);
   const res = await fetch(url);
   const data = await res.json()
+  CONTAINER.innerHTML = "";
   return data.results;
 };
 
@@ -110,6 +111,7 @@ const fetchVideo=async(movie_id)=>{
 const ActorsofMovies = async (movie) => {
   const movieRes = await fetchActors(movie);
   console.log(movieRes)
+  CONTAINER.innerHTML = "";
   return movieRes
 };
 const fetchActors= async(movieId) =>{
@@ -161,11 +163,13 @@ const RenderActorDetails = (Actor,credits) => {
   else{
     gender="male"
   }
-  CONTAINER.setAttribute("style", "background-image: url(" +BACKDROP_BASE_URL + Actor.profile_path+ ");background-size: contain; background-position: left top; background-repeat: no-repeat; background-size: 500px 700px;");
-  //CONTAINER.setAttribute("style", "background-color: white;");
+  //CONTAINER.setAttribute("style", "background-image: url(" +BACKDROP_BASE_URL + Actor.profile_path+ ");background-size: contain; background-position: left top; background-repeat: no-repeat; background-size: 500px 700px;");
   CONTAINER.innerHTML = `
   <div class="movDetail">
     <div class="row">
+    <div class="col-md-3">
+        <img src="${BACKDROP_BASE_URL + Actor.profile_path}" class="singleActorPic" class="ml-3 mt-3">
+      </div>
     <div class="col-lg-8 col-md-12 col-sm-12">
     <h2 id="actor-name"><span>${Actor.name}</span></h2>
     <h4>Gender:</h4>
@@ -177,7 +181,7 @@ const RenderActorDetails = (Actor,credits) => {
     <p id="death"></p>
     <h4>Biography:</h4>
      <p id="biography" style="color:#BDBDBD; font-size: .8rem;">${Actor.biography}</p><br><br><br><br><br><br><br><br>
-  </div>`;
+  </div></div>`;
   if (Actor.deathDay) {
     const birthday = document.querySelector(".death");
     birthday.insertAdjacentHTML(
@@ -206,7 +210,7 @@ const RenderActorDetails = (Actor,credits) => {
         } poster">
             <h3>${credits.cast[i].title}</h3>`;
         CardDiv.addEventListener("click", () => {
-          movieDetails(Actor);
+          movieDetails(credits.cast[i]);
         });
         CardDiv.appendChild(movieImage);
         CardDiv.appendChild(movieTitle);
