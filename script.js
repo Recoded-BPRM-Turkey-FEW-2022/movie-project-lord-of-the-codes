@@ -451,7 +451,7 @@ const renderPopularMovies = (movies) => {
         <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
       movie.title
     } poster">
-        <h3>${movie.title}</h3>`;//classes can be changed
+        <h3 style="color="black"">${movie.title}</h3>`;//classes can be changed
     CardDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
